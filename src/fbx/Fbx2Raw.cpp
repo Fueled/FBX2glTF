@@ -1137,6 +1137,7 @@ bool LoadFBXFile(
   // Use Y up for glTF
   FbxAxisSystem::MayaYUp.ConvertScene(pScene);
 
+#if true
   // FBX's internal unscaled unit is centimetres, and if you choose not to work in that unit,
   // you will find scaling transforms on all the children of the root node. Those transforms are
   // superfluous and cause a lot of people a lot of trouble. Luckily we can get rid of them by
@@ -1148,6 +1149,9 @@ bool LoadFBXFile(
   }
   // this is always 0.01, but let's opt for clarity.
   scaleFactor = FbxSystemUnit::m.GetConversionFactorFrom(FbxSystemUnit::cm);
+#else
+  scaleFactor = 1.0;
+#endif
 
   ReadNodeHierarchy(raw, pScene, pScene->GetRootNode(), 0, "");
   ReadNodeAttributes(raw, pScene, pScene->GetRootNode(), textureLocations);
