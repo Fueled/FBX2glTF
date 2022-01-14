@@ -160,6 +160,8 @@ Then, compilation on Unix machines will look something like:
 
 ```
 # Determine SDK location & build settings for Linux vs (Recent) Mac OS X
+# Note that this will install an outdated version of the SDK - the latest version can be installed from Autodesk's website https://www.autodesk.com
+# If using a version of the SDK other than 2019.2, make sure to update the property FBXSDK_VERSION in `CMakeLists.txt` to the appropriate value.
 > if [[ "$OSTYPE" == "darwin"* ]]; then
     export CONAN_CONFIG="-s compiler=apple-clang -s compiler.version=10.0 -s compiler.libcxx=libc++"
     export FBXSDK_TARBALL="https://github.com/zellski/FBXSDK-Darwin/archive/2019.2.tar.gz"
@@ -189,6 +191,16 @@ fi
 ```
 
 If all goes well, you will end up with a statically linked executable in `./build/FBX2glTF`.
+
+#### Generating Xcode project on MacOS
+
+To generate an Xcode project on MacOS, you may the following commands, after installing the SDK & configuring Conan:
+```
+> conan install . -i build/mac -s build_type=Release ${CONAN_CONFIG}
+> cmake -G Xcode -B build/mac
+```
+
+Once it completes, a project file will be created at open `build/mac/FBX2glTF.xcodeproj`.
 
 ### Windows
 
